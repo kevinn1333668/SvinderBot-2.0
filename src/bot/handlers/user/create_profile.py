@@ -86,6 +86,10 @@ async def profile_town(message: Message, state: FSMContext):
         await message.answer("Боюсь ты где-то ошибся, попробуй еще раз", reply_markup=ReplyKeyboardRemove())
         return
 
+    if len(message.text) < 2 or len(message.text) > 100:
+        await message.answer("Города такой длины не существует, попробуй ещё раз")
+        return
+
     await state.update_data(town=message.text)
     await message.answer(
         "Напиши о себе: хобби, интересы и увлечения на сервере (реальные данные по желанию)",
@@ -98,10 +102,6 @@ async def profile_town(message: Message, state: FSMContext):
 async def profile_description(message: Message, state: FSMContext):
     if not message.text:
         await message.answer("Боюсь ты где-то ошибся, попробуй еще раз", reply_markup=ReplyKeyboardRemove())
-        return
-
-    if len(message.text) < 2 or len(message.text) > 100:
-        await message.answer("Города такой длины не существует, попробуй ещё раз")
         return
 
     await state.update_data(description=message.text)

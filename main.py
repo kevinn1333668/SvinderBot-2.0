@@ -6,6 +6,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
+from src.bot.handlers.admin.broadcast import broadcast_router
 from src.core.config import settings
 from src.core.db import async_session as session_maker
 from src.core.logging_settings import setup_logging
@@ -38,6 +39,7 @@ async def main():
 
     dp.include_routers(
         admin_router,
+        broadcast_router,
         commands_router,
         search_router,
         edit_router,

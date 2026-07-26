@@ -7,6 +7,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from src.bot.handlers.admin.broadcast import broadcast_router
+from src.bot.utils.scheduled_tasks import setup_scheduler
 from src.core.config import settings
 from src.core.db import async_session as session_maker
 from src.core.logging_settings import setup_logging
@@ -47,6 +48,8 @@ async def main():
         user_router,
         profile_router
     )
+
+    setup_scheduler(session_maker)
 
     await setup_bot_commands(bot)
     await set_menu_button(bot)

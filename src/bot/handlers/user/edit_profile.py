@@ -65,7 +65,7 @@ async def edit_profile_name(message: Message, state: FSMContext):
 
     updated_data = await state.get_data()
     await message.answer(
-        f"Имя обновлено на: {updated_data['name']}. Текущий возраст: {data['original_age']}. Введите новый или оставьте как есть.",
+        f"Текущий возраст: {data['original_age']}. Введите новый или оставьте как есть.",
         reply_markup=skip_keyboard()
     )
     await state.set_state(EditProfileStates.age)
@@ -94,7 +94,7 @@ async def edit_profile_age(message: Message, state: FSMContext):
 
     updated_data = await state.get_data()
     await message.answer(
-        f"Возраст обновлен на: {updated_data['age']}. Текущий пол: {data['original_sex']}. Выберите новый или оставьте как есть.",
+        f"Текущий пол: {data['original_sex'].value}. Выберите новый или оставьте как есть.",
         reply_markup=sex_selection_horizontal_keyboard_with_skip()
     )
     await state.set_state(EditProfileStates.sex)
@@ -119,7 +119,7 @@ async def edit_profile_sex(message: Message, state: FSMContext):
 
     updated_data = await state.get_data()
     await message.answer(
-        f"Пол обновлен на: {updated_data['sex'].value}. Текущий город: {data['original_town']}. "
+        f"Текущий город: {data['original_town']}. "
         f"Введите новый или оставьте как есть.",
         reply_markup=skip_keyboard(),
     )
@@ -137,7 +137,7 @@ async def edit_profile_town(message: Message, state: FSMContext):
 
     updated_data = await state.get_data()
     await message.answer(
-        f"Город обновлен на: {updated_data['town']}. Текущее описание: \"{data['original_description']}\". Напишите новое или оставьте как есть.",
+        f"Текущее описание: \"{data['original_description']}\". Напишите новое или оставьте как есть.",
         reply_markup=skip_keyboard()
     )
     await state.set_state(EditProfileStates.description)
@@ -156,7 +156,7 @@ async def edit_profile_description(message: Message, state: FSMContext):
         await state.update_data(description=message.text)
 
     await message.answer(
-        f"Описание обновлено. Текущее фото: (отправлю его следующим сообщением, если есть).\nОтправьте новое фото или нажмите 'Оставить как есть'.",
+        f"Текущее фото: (отправлю его следующим сообщением, если есть).\nОтправьте новое фото или нажмите 'Оставить как есть'.",
         reply_markup=skip_keyboard()
     )
 

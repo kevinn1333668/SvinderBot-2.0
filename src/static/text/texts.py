@@ -66,3 +66,5 @@ TEXT_PROFILE_CREATE_BEGIN = """
 TEXT_FILTER_SEX = "⚙️ Фильтрация по полу"
 
 TEXT_SKIP_BUTTON = "Оставить как есть ⏭️"
+
+WITHOUT_TOWN_BUTTON = "Без города"

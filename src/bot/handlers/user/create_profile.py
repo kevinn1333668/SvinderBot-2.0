@@ -2,7 +2,7 @@ from aiogram import Router, Bot
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
 
-from src.bot.keyboards.reply import sex_selection_horizontal_keyboard, main_menu_keyboard
+from src.bot.keyboards.reply import sex_selection_horizontal_keyboard, main_menu_keyboard, without_town_keyboard
 from src.bot.states import CreateProfileStates, UserRoadmap
 from src.repositories.uow import UnitOfWork
 from src.schemas.enums import SexEnum
@@ -76,7 +76,7 @@ async def profile_sex(message: Message, state: FSMContext):
     await state.update_data(sex=sex)
     await message.answer(
         "Записал. Теперь скажи свой город на сервре",
-        reply_markup=ReplyKeyboardRemove()
+        reply_markup=without_town_keyboard()
     )
     await state.set_state(CreateProfileStates.town)
 

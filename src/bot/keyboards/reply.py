@@ -2,7 +2,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 from src.static.text.texts import (
     TEXT_MALE, TEXT_FEMALE, TEXT_YES, TEXT_SEARCH_PROFILES, TEXT_EDIT_PROFILE, TEXT_MY_PROFILE, TEXT_MY_LIKES,
-    TEXT_FILTER_SEX, TEXT_DELETE_PROFILE, TEXT_SKIP_BUTTON
+    TEXT_FILTER_SEX, TEXT_DELETE_PROFILE, TEXT_SKIP_BUTTON, WITHOUT_TOWN_BUTTON
 )
 
 
@@ -80,6 +80,13 @@ def skip_keyboard() -> ReplyKeyboardMarkup:
         resize_keyboard=True,
         one_time_keyboard=True
         )
+
+def without_town_keyboard() -> ReplyKeyboardMarkup:
+    return ReplyKeyboardMarkup(
+        keyboard=[[KeyboardButton(text=WITHOUT_TOWN_BUTTON)]],
+        resize_keyboard=True,
+        one_time_keyboard=True
+    )
 
 
 def sex_selection_horizontal_keyboard_with_skip() -> ReplyKeyboardMarkup:

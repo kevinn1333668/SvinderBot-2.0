@@ -1,7 +1,7 @@
 from datetime import timezone, datetime, timedelta
 
+from sqlalchemy import delete, func
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.exc import IntegrityError
 
 from src.repositories.base import BaseRepository
 from src.repositories.models import Dislike
@@ -21,3 +21,9 @@ class DislikeRepository(BaseRepository):
         )
         await self.session.execute(stmt)
         return True
+
+    async def delete_expired(self) -> int:
+        result = await self.session.execute(
+            delete(Dislike).where(Dislike.until <= func.now())
+        )
+        return result.rowcount

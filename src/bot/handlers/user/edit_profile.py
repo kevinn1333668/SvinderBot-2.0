@@ -117,7 +117,7 @@ async def edit_profile_sex(message: Message, state: FSMContext):
         sex = SexEnum.FEMALE if message.text == TEXT_FEMALE else SexEnum.MALE
         await state.update_data(sex=sex)
 
-    updated_data = await state.get_data()
+
     await message.answer(
         f"Текущий город: {data['original_town']}. "
         f"Введите новый или оставьте как есть.",
@@ -130,12 +130,16 @@ async def edit_profile_sex(message: Message, state: FSMContext):
 async def edit_profile_town(message: Message, state: FSMContext):
     data = await state.get_data()
 
+    if len(message.text) < 2 or len(message.text) > 100:
+        await message.answer("Города такой длины не существует, попробуй ещё раз")
+        return
+
     if message.text == TEXT_SKIP_BUTTON:
         await state.update_data(town=data["original_town"])
     else:
         await state.update_data(town=message.text)
 
-    updated_data = await state.get_data()
+
     await message.answer(
         f"Текущее описание: \"{data['original_description']}\". Напишите новое или оставьте как есть.",
         reply_markup=skip_keyboard()

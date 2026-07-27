@@ -23,7 +23,8 @@ like_router = Router()
 async def handle_like(
     callback: CallbackQuery,
     like_service: LikeService,
-    bot: Bot
+    bot: Bot,
+    state: FSMContext
 ):
     liker_tg_id = callback.from_user.id
     liked_tg_id = int(callback.data.split(":")[1])
@@ -33,14 +34,16 @@ async def handle_like(
     if not result.is_match:
         await callback.message.answer("Лайк отправлен!")
         await send_like_notification(bot, result.liker_profile, liked_tg_id)
-        return
 
-    await callback.message.answer("🎉 У вас взаимная симпатия!")
+    else:
+        await callback.message.answer("🎉 У вас взаимная симпатия!")
 
-    await asyncio.gather(
-        send_match_notification(bot, result.liked_profile, liker_tg_id, liked_tg_id),
-        send_match_notification(bot, result.liker_profile, liked_tg_id, liker_tg_id),
-    )
+        await asyncio.gather(
+            send_match_notification(bot, result.liked_profile, liker_tg_id, liked_tg_id),
+            send_match_notification(bot, result.liker_profile, liked_tg_id, liker_tg_id),
+        )
+
+
 
 
 @like_router.message(F.text == "Мои лайки ❤️")
@@ -100,6 +103,7 @@ async def show_next_pending_like_profile(target_message: Message, state: FSMCont
                 photo=profile_to_show.s3_path,
                 caption=(
                     f"Вам симпатизирует: {profile_to_show.name}, {profile_to_show.age}, {profile_to_show.town}\n"
+                    f"{profile_to_show.sex.value}\n"
                     f"{profile_to_show.description}\n\n"
                 ),
                 reply_markup=pending_like_action_keyboard(liker_tg_id=profile_to_show.tg_id),
@@ -194,6 +198,7 @@ async def process_view_my_mutual_likes(callback: CallbackQuery, state: FSMContex
                     photo=file_id,
                     caption=(
                         f"Взаимная симпатия с: {profile.name}, {profile.age}\n"
+                        f"{profile.sex.value}\n"
                         f"Город: {profile.town}\n"
                         f"О себе: {profile.description}\n\n"
                         f"Связь: {telegram_user_info}"
@@ -212,7 +217,7 @@ async def process_view_my_mutual_likes(callback: CallbackQuery, state: FSMContex
 
 
 @like_router.callback_query(F.data.startswith("accept_pending_like:"))
-async def process_accept_pending_like(callback: CallbackQuery, bot: Bot, uow: UnitOfWork):
+async def process_accept_pending_like(callback: CallbackQuery, bot: Bot, uow: UnitOfWork, state: FSMContext):
     await callback.answer("Лайк принят! ❤️")
     await callback.message.delete()
 
@@ -231,10 +236,6 @@ async def process_accept_pending_like(callback: CallbackQuery, bot: Bot, uow: Un
 
     result = await like_service.accept_mutual(liker_profile.tg_id, current_profile.tg_id)
 
-    try:
-        await callback.message.edit_reply_markup(reply_markup=None)
-    except TelegramBadRequest:
-        pass
 
     if result:
         await asyncio.gather(
@@ -247,6 +248,11 @@ async def process_accept_pending_like(callback: CallbackQuery, bot: Bot, uow: Un
     else:
 
         await callback.message.answer("Не удалось подтвердить симпатию. Возможно, лайк уже был обработан.")
+
+    data = await state.get_data()
+    current_index = data.get("current_pending_index", 0)
+    await state.update_data(current_pending_index=current_index + 1)
+    await show_next_pending_like_profile(callback.message, state, bot)
 
 
 @like_router.callback_query(F.data.in_({"likes_to_main_menu", "back_to_view_likes_menu"}))

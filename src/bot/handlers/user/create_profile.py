@@ -106,7 +106,7 @@ async def profile_description(message: Message, state: FSMContext):
 
     await state.update_data(description=message.text)
     await message.answer(
-        "Последний этап! Отправь одно фото себя на СЕРВЕРЕ для своей анкеты.\n"
+        "Последний этап! Отправь одно фото себя (своего скина) на СЕРВЕРЕ для своей анкеты.\n\n"
         "Любые другие фото приведут к удалению анкеты и блокировке аккаунта\n"
         "Если бот завис после отправки фото - /start",
         reply_markup=ReplyKeyboardRemove(),

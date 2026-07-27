@@ -47,6 +47,7 @@ async def send_like_notification(
             photo=liker_profile.s3_path,
             caption=(
                 f"Вас лайкнул: {liker_profile.name}, {liker_profile.age}\n"
+                f"{liker_profile.sex.value}\n"
                 f"Город: {liker_profile.town}\n"
                 f"О себе: {liker_profile.description}\n\n"
             )

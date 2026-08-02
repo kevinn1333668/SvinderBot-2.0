@@ -48,7 +48,7 @@ async def send_next_profile(
             photo=profile.s3_path,
             caption=(
                 f"{profile.name}, {profile.age}, {profile.town}\n"
-                f"{sex_filter.value}\n"
+                f"{profile.sex.value}\n"
                 f"{profile.description}"
             ),
             reply_markup=profile_action_keyboard()

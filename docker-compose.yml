@@ -4,6 +4,7 @@ services:
     env_file: .env
     depends_on:
       - db
+      - redis
     restart: unless-stopped
     volumes:
       - ./logs:/app/logs
@@ -18,5 +19,12 @@ services:
       - pgdata:/var/lib/postgresql/data
     restart: unless-stopped
 
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+
 volumes:
   pgdata:
+  redis_data:

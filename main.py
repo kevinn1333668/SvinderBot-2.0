@@ -5,6 +5,7 @@ import sys
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.fsm.storage.redis import RedisStorage
 
 from src.bot.handlers.admin.broadcast import broadcast_router
 from src.bot.utils.scheduled_tasks import setup_scheduler
@@ -28,7 +29,8 @@ from src.bot.keyboards.menu_commands import setup_bot_commands, set_menu_button
 
 async def main():
     bot = Bot(token=settings.BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-    dp = Dispatcher()
+    storage = RedisStorage.from_url(settings.REDIS_URL)
+    dp = Dispatcher(storage=storage)
 
     dp.message.middleware(LoggingMiddleware(session_maker))
     dp.message.middleware(UoWMiddleware(session_maker))

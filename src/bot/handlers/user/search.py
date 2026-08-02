@@ -48,7 +48,7 @@ async def send_next_profile(
             photo=profile.s3_path,
             caption=(
                 f"{profile.name}, {profile.age}, {profile.town}\n"
-                f"{profile.sex.value}\n"
+                f"{sex_filter.value}\n"
                 f"{profile.description}"
             ),
             reply_markup=profile_action_keyboard()
@@ -155,7 +155,7 @@ async def initiate_profile_search_handler(
         await message.answer("Чтобы начать поиск, сначала создайте анкету (/start).")
         return
 
-    await state.update_data(sex_filter=user_profile.sex_filter)
+    await state.update_data(sex_filter=user_profile.sex_filter.value)
     await message.answer("Начинаем поиск анкет...", reply_markup=ReplyKeyboardRemove())
 
     await send_next_profile(

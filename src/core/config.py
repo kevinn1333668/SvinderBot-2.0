@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str
     POSTGRES_PORT: int
 
+    REDIS_URL: str
+
     ADMIN_CHAT_ID: int
     ADMINS_IDS: list[int]
 

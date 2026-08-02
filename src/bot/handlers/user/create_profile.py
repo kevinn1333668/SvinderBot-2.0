@@ -73,7 +73,7 @@ async def profile_sex(message: Message, state: FSMContext):
         return
 
     sex = SexEnum.FEMALE if message.text == TEXT_FEMALE else SexEnum.MALE
-    await state.update_data(sex=sex)
+    await state.update_data(sex=sex.value)
     await message.answer(
         "Записал. Теперь скажи свой город на сервре",
         reply_markup=without_town_keyboard()

@@ -31,11 +31,10 @@ async def edit_profile_start(message: Message, state: FSMContext, uow: UnitOfWor
     await state.update_data(
         original_name=profile.name,
         original_age=profile.age,
-        original_sex=profile.sex,
+        original_sex=profile.sex.value,
         original_town=profile.town,
         original_description=profile.description,
         original_s3_path=profile.s3_path,
-        original_filter_sex=profile.sex_filter,
     )
 
     await message.answer(
@@ -94,7 +93,7 @@ async def edit_profile_age(message: Message, state: FSMContext):
 
     updated_data = await state.get_data()
     await message.answer(
-        f"Текущий пол: {data['original_sex'].value}. Выберите новый или оставьте как есть.",
+        f"Текущий пол: {data['original_sex']}. Выберите новый или оставьте как есть.",
         reply_markup=sex_selection_horizontal_keyboard_with_skip()
     )
     await state.set_state(EditProfileStates.sex)
@@ -115,7 +114,7 @@ async def edit_profile_sex(message: Message, state: FSMContext):
 
     else:
         sex = SexEnum.FEMALE if message.text == TEXT_FEMALE else SexEnum.MALE
-        await state.update_data(sex=sex)
+        await state.update_data(sex=sex.value)
 
 
     await message.answer(

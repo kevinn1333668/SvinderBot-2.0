@@ -78,7 +78,7 @@ async def handle_profile_action(
     user_tg_id = callback_query.from_user.id
     state_data = await state.get_data()
     viewed_tg_id = state_data.get("current_viewing_tg_id")
-    sex_filter = state_data.get("sex_filter")
+    sex_filter = SexFilterState(state_data.get("sex_filter"))
 
     if not viewed_tg_id:
         await callback_query.message.answer("Ошибка состояния. Попробуйте начать поиск заново.")
@@ -178,7 +178,7 @@ async def handle_complain_confirmation(
     profile_photo = state_data.get("profile_image")
     previous_message_text = state_data.get("previous_message_text", "")
     previous_keyboard = state_data.get("previous_keyboard", None)
-    sex_filter = state_data.get("sex_filter")
+    sex_filter = SexFilterState(state_data.get("sex_filter"))
 
     if action == "complain_cancel":
         try:

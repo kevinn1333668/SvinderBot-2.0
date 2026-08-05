@@ -44,9 +44,9 @@ class ProfileRepository(BaseRepository):
             Profile.is_active.is_(True),
         ]
 
-        if sex_filter == SexFilterState.ONLY_GIRLS.value:
+        if sex_filter == SexFilterState.ONLY_GIRLS:
             conditions.append(Profile.sex == SexEnum.FEMALE)
-        elif sex_filter == SexFilterState.ONLY_BOYS.value:
+        elif sex_filter == SexFilterState.ONLY_BOYS:
             conditions.append(Profile.sex == SexEnum.MALE)
 
         count_stmt = select(func.count()).select_from(Profile).where(*conditions)

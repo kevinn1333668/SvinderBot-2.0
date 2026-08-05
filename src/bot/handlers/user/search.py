@@ -118,7 +118,6 @@ async def handle_profile_action(
     elif action == "complain":
         await state.update_data(
             previous_message_text=callback_query.message.caption,
-            previous_keyboard=callback_query.message.reply_markup,
         )
         try:
             await callback_query.message.edit_caption(
@@ -177,14 +176,13 @@ async def handle_complain_confirmation(
     viewed_tg_id = state_data.get("current_viewing_tg_id")
     profile_photo = state_data.get("profile_image")
     previous_message_text = state_data.get("previous_message_text", "")
-    previous_keyboard = state_data.get("previous_keyboard", None)
     sex_filter = SexFilterState(state_data.get("sex_filter"))
 
     if action == "complain_cancel":
         try:
             await callback_query.message.edit_caption(
                 caption=previous_message_text,
-                reply_markup=previous_keyboard
+                reply_markup=profile_action_keyboard()
             )
         except TelegramBadRequest:
             await callback_query.message.answer("Возврат к предыдущему профилю")

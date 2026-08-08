@@ -129,7 +129,7 @@ async def edit_profile_sex(message: Message, state: FSMContext):
 async def edit_profile_town(message: Message, state: FSMContext):
     data = await state.get_data()
 
-    if len(message.text) < 2 or len(message.text) > 100:
+    if len(message.text) < 2 or len(message.text) > 30:
         await message.answer("Города такой длины не существует, попробуй ещё раз")
         return
 

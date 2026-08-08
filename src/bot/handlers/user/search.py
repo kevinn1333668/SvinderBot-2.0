@@ -93,6 +93,12 @@ async def handle_profile_action(
 
     if action == "like":
         like_result = await like_service.like_profile(user_tg_id, viewed_tg_id)
+
+        if like_result is None:
+            await callback_query.message.answer("Вы уже поставили лайк этому профилю.")
+            await send_next_profile(callback_query.message, user_tg_id, state, bot, sex_filter, profile_service)
+            return
+
         await callback_query.message.answer("👍")
 
         if like_result.is_match:

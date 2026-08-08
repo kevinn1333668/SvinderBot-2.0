@@ -86,7 +86,7 @@ async def profile_town(message: Message, state: FSMContext):
         await message.answer("Боюсь ты где-то ошибся, попробуй еще раз", reply_markup=ReplyKeyboardRemove())
         return
 
-    if len(message.text) < 2 or len(message.text) > 100:
+    if len(message.text) < 2 or len(message.text) > 30:
         await message.answer("Города такой длины не существует, попробуй ещё раз")
         return
 
